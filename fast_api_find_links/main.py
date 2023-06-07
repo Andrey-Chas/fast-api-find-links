@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fast_api_find_links.some_text import SomeText
+from fast_api_find_links.find_meeting_links import *
 
 app = FastAPI()
 
@@ -10,6 +11,8 @@ app = FastAPI()
 # })
 #
 # request_find = requests.post(head, data=some_text)
+
+
 
 
 @app.get("/")
@@ -25,3 +28,14 @@ async def find_links(text: SomeText):
         if word.startswith("http:") or word.startswith("https:"):
             links.append(word)
     return links
+
+
+@app.get("/find_meeting_links")
+async def find_links(text: SomeText):
+    meeting_links = []
+    split_text = text.text.split()
+    for word in split_text:
+        match_link = find_link_method_1(word)
+        if match_link != "":
+            meeting_links.append(match_link)
+    return meeting_links
