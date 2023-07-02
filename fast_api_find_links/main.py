@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fast_api_find_links.some_text import SomeText
+from fast_api_find_links.some_text import SomeText, data
 from fast_api_find_links.find_meeting_links import *
 
 app = FastAPI()
