@@ -1,8 +1,18 @@
-from fastapi import FastAPI, Request
-from fast_api_find_links.some_text import SomeText, data
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fast_api_find_links.some_text import SomeText
 from fast_api_find_links.find_meeting_links import *
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # links = []
 # head = "http://127.0.0.1:8081/find_links"
@@ -42,7 +52,7 @@ async def find_links(text: SomeText):
     return meeting_links
 
 
-@app.post("/get_calendar_events")
-async def load_data(data: Request):
-    data_to_load = await data.json()
-    return data_to_load
+@app.get("/get_calendar_events")
+async def load_data():
+    file_path = f"C:/Users/Andru/source/repos/User-Calendar/User-Calendar/wwwroot/data.json"
+    return FileResponse(file_path)
