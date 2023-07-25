@@ -1,10 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fast_api_find_links.some_text import SomeText
 from fast_api_find_links.find_meeting_links import *
 
 app = FastAPI()
+
+database = []
 
 app.add_middleware(
     CORSMiddleware,
@@ -56,3 +58,17 @@ async def find_links(text: SomeText):
 async def load_data():
     file_path = f"C:/Users/Andru/source/repos/User-Calendar/User-Calendar/wwwroot/data.json"
     return FileResponse(file_path)
+
+
+@app.get("/post_data")
+async def get_data():
+    for item in database:
+        return item
+    return {"error": "Data not found"}
+
+
+@app.post("/post_data")
+async def add_data(data: dict):
+    database.clear()
+    database.append(data)
+    return {"message": "Data published successfully"}
